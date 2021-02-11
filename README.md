@@ -1,10 +1,10 @@
-
 # Set up #
 
 Backend built in PHP Laravel.
+Frontend built in VueJS.
 
 ### Backend:  ###
-Note: Can use docker just go to `backend` then `docker-compose up -d`
+Note: Can use docker just go to `backend`folder then `docker-compose up -d`
 ***
 1. Go to `backend/app` folder
 2. `composer install`
@@ -18,4 +18,4 @@ Note: Can use docker just go to `backend` then `docker-compose up -d`
 
 1. Go to `frontend/app` folder
 2. `npm install`
-3. `npm run serve`
+3. On another terminal `npm run serve` *(http://localhost:8080) default*

@@ -1,0 +1,56 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: ./images/php
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+       - ./app:/var/www:delegated
+       - ./images/php/local.ini:/usr/local/etc/php/conf.d/local.ini:delegated
+    networks:
+      - be-aloware-network
+
+  #Nginx Service
+  webserver:
+    image: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./app:/var/www
+      - ./images/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - be-aloware-network
+
+  #MySQL Service
+  db:
+    image: mysql:5.7.22
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./images/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - be-aloware-network
+
+#Docker Networks
+networks:
+  be-aloware-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local

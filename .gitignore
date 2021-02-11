@@ -1,0 +1,9 @@
+.idea
+backend/app/vendor
+backend/app/.idea
+backend/app/Homestead.json
+backend/app/Homestead.yaml
+backend/app/.env
+backend/app/public/uploads/
+.DS_Store
+backend/app/composer.lock

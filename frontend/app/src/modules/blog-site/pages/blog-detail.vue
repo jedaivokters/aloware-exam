@@ -45,8 +45,9 @@ export default {
       },
     };
   },
-  async mounted() {
+  async created() {
     const slug = this.$route.params.slug;
+    this.blog.slug = slug;
 
     this.blog = await this.$api.get('blog/comments',{
       params: { slug }

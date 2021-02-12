@@ -63,18 +63,12 @@ class BlogController extends Controller {
 			'comments' => []
 		];
 
-		for ($i = 0; $request->level >= $i; $i++) {
-			$path .= '.comments['.$i.']';
-			if ($i > 0) {
-				$path .= '.comments['.$request->parent.'].comments[0]';
-			}
-		}
-
-		echo $path;
-		exit;
+		foreach($request->path as $p) {
+			$path .= '.comments['.$p.']';
+		};
 
 		$cast = "CAST('".json_encode($newComment)."' AS JSON)";
-		$jsonSet = DB::raw("JSON_ARRAY_INSERT(`comments`, '$.comments[0]', ".$cast.")");
+		$jsonSet = DB::raw("JSON_ARRAY_INSERT(`comments`, '".$path."', ".$cast.")");
 
 		// Add new comment
 		$this->blog->where('slug', $request->slug)->update(['comments' => $jsonSet]);

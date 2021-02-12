@@ -47,24 +47,27 @@ html {
 </style>
 
 <script >
+
 export default {
   name: 'comment-form',
-  props: ['id', 'blogSlug', 'level'],
+  props: ['path', 'blogSlug', 'comments'],
   data() {
     return {
       comment: {}
     };
   },
   mounted() {
-    this.comment.level = this.level;
-    this.comment.parent = this.id;
+    this.comment.path = this.path;
     this.comment.slug = this.blogSlug;
   },
   methods: {
     async submitForm(e) {
       e.preventDefault();
 
-      await this.$api.post('blog/comment-store', this.comment);
+      const comment = await this.$api.post('blog/comment-store', this.comment);
+      if (comment.status == 200) {
+        this.comments.unshift(comment.data.data);
+      }
     }
   }
 };

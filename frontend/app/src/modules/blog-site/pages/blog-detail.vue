@@ -7,10 +7,10 @@
         <div class="card-body">
           <h1 align="center">{{ blog.title }}</h1>
           <br />
-          <comments v-for="(comment, idx) in blog.comments.comments" :id="idx" :blogSlug="blog.slug" :comment="comment" :level=0 />
+          <comments v-for="(comment, idx) in blog.comments.comments" :id="idx" :path="[parent, idx]" :blogSlug="blog.slug" :comment="comment" />
           <hr />
           <b>New Comment</b> <br />
-          <comment-form :blogSlug="blog.slug" :level=0 :id=0 />
+          <comment-form :blogSlug="blog.slug" :path=[0] :comments="blog.comments.comments" />
         </div>
       </div>
     </div>
@@ -36,12 +36,13 @@ export default {
   },
   data() {
     return {
+      parent: 0,
       blog: {
         slug: '',
         comments: {
           comments: []
         }
-      }
+      },
     };
   },
   async mounted() {
@@ -49,7 +50,8 @@ export default {
 
     this.blog = await this.$api.get('blog/comments',{
       params: { slug }
-      }).then(r => r.data.data[0]);
+    }).then(r => r.data.data[0]);
+
   },
   methods: {},
 };

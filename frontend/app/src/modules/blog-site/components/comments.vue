@@ -25,11 +25,11 @@
 
       <div class="card-footer">
         Reply: <br />
-        <comment-form :blogSlug="blogSlug" :level=level+1 :id="id" />
+        <comment-form :blogSlug="blogSlug" :path="path" :comments="comment.comments" />
       </div>
       <div class="comments-box" v-if="comment.comments.length > 0">
         <br />
-        <comments v-for="(comment, idx) in comment.comments" :id="idx" :blogSlug="blogSlug" :comment="comment" :level=level+1 ></comments>
+        <comments v-for="(comment, idx) in comment.comments" :id="idx" :path="setPath(idx)" :blogSlug="blogSlug" :comment="comment" ></comments>
       </div>
     </div>
   </div>
@@ -53,11 +53,21 @@ export default {
   components: {
     'comment-form': CommentForm
   },
-  props: ['id', 'blogSlug', 'comment', 'level'],
+  props: ['id', 'blogSlug', 'comment', 'path', 'comments'],
   data() {
-    return {};
+    return {
+
+    }
   },
   mounted() {
+    
+  },
+  methods: {
+    setPath: function(id) {
+      const path = Object.assign([], this.path);
+      path.push(id);
+      return path;
+    }
     
   }
 };
